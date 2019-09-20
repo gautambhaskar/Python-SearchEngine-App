@@ -6,7 +6,7 @@ class WebSurfer:
         self.master = master
         master.title("WebSurfer")
 
-        self.chosen = "b"
+        self.chosen = 2
         self.label = Label(master, text="WebSurfer")
         self.label.pack()
         #Google Search Option
@@ -15,13 +15,12 @@ class WebSurfer:
         self.search = Entry(master)
         self.search.pack()
         self.choice = Label(master, text="Search Engine:")
-        self.R1 = Radiobutton(master, text="Google", variable=self.chosen, value="a")
-        self.R2 = Radiobutton(master, text="DuckDuckGo", variable=self.chosen, value="b")
-        self.R1.pack()
-        self.R2.pack()
+        self.R1 = Radiobutton(master, text="Google", variable=self.chosen, value=1, command=self.change1)
+        self.R2 = Radiobutton(master, text="DuckDuckGo", variable=self.chosen, value=2, command=self.change2)
+        self.R1.pack(anchor=W)
+        self.R2.pack(anchor=W)
         self.go = Button(master, text="Search", command=self.google)
         self.go.pack()
-        self.R2.select()
         self.check = Button(master, text="History", command=self.history)
         self.check.pack()
 
@@ -29,14 +28,18 @@ class WebSurfer:
         self.close_button.pack()
 
         self.history = []
+    def change1(self):
+        self.chosen = 1
+    def change2(self):
+        self.chosen = 2
     def google(self):
         params = str(self.search.get()).split(" ")
-        if params != "":
+        if params != [""]:
             self.history.append(params)
         query = ""
-        if(self.chosen == "a"):
+        if(self.chosen == 1):
             query += "https://www.google.com/search?q="
-        elif(self.chosen == "b"):
+        elif(self.chosen == 2):
             query += "https://www.duckduckgo.com/?q="
         for param in params:
             query += param + "+"
@@ -49,9 +52,6 @@ class WebSurfer:
                 print(entry)
         else:
             print("No search records available...")
-            print(self.chosen.get())
-
-
 root = Tk()
 my_gui = WebSurfer(root)
 root.mainloop()
